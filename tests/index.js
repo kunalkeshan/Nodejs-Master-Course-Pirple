@@ -2,39 +2,14 @@
  * Test runner
  */
 
-// Dependencies
-var helpers = require('../lib/helpers');
-var assert = require('assert');
-
 // Application logic for the test runner
 _app = {};
 
 // Container for test
-_app.tests = {
-    unit: {},
-};
+_app.tests = {};
 
-// Assert that the getNumber function returns a number
-_app.tests.unit['helpers.getNumber should return a number'] = function (done) {
-    var value = helpers.getNumber();
-    assert.equal(typeof value, 'number');
-    done();
-};
-
-
-// Assert that the getNumber function returns 1
-_app.tests.unit['helpers.getNumber should return 1'] = function (done) {
-    var value = helpers.getNumber();
-    assert.equal(value, 1);
-    done();
-};
-
-// Assert that the getNumber function returns 2
-_app.tests.unit['helpers.getNumber should return 2'] = function (done) {
-    var value = helpers.getNumber();
-    assert.equal(value, 2);
-    done();
-};
+// Unit test dependency
+_app.tests.unit = require('./unit');
 
 // Count all the tests
 _app.countTests = function () {
@@ -86,14 +61,14 @@ _app.runTests = function () {
             var subTests = _app.tests[key];
             for (var testName in subTests) {
                 if (subTests.hasOwnProperty(testName)) {
-                    (function() {
+                    (function () {
                         var tempTestName = testName;
                         var testValue = subTests[testName];
                         try {
                             testValue(function () {
                                 // if calls back, then error succeeded, log in green
                                 console.log(`\x1b[32m%s\x1b[0m`, tempTestName);
-                                count++;
+                                counter++;
                                 successes++;
                                 if (counter === limit) {
                                     _app.produceTestReport(limit, successes, error);
